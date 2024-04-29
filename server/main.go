@@ -11,7 +11,10 @@ import (
 
 func main() {
 	// Load configuration
-	config.LoadConfig()
+	err := config.LoadConfig()
+	if err != nil {
+		log.Fatal("Failed to load configuration:", err)
+	}
 
 	// Initialize database connection
 	db.InitDB()
@@ -22,6 +25,6 @@ func main() {
 	http.HandleFunc("/api/messages", handlers.SendMessage)
 
 	// Start server
-	log.Println("Server started on port", config.Port)
+	log.Printf("Server started on port %s", config.Port)
 	log.Fatal(http.ListenAndServe(":"+config.Port, nil))
 }
